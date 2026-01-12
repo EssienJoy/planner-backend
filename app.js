@@ -18,23 +18,13 @@ const cookieParser = require('cookie-parser');
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware
-// Enable CORS for your frontend
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://planner-backend-i13a.onrender.com'
-];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: 'http://localhost:5173',
     credentials: true
 }));
+
+app.options('*', cors());
 
 
 // app.use is used to make use of Middleware

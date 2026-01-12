@@ -15,19 +15,18 @@ const signToken = id => {
 };
 
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
-    const cookieOptions = {
+
+
+    res.cookie('jwt', token, {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        secure: process.env.NODE_ENV === 'production'
-    };
-
-
-    res.cookie('jwt', token, cookieOptions);
+        secure: process.env.NODE_ENV === 'production' || req.secure
+    });
 
 
     res.status(statusCode).json({
