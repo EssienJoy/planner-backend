@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Enable CORS for your frontend
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://planner-frontend.onrender.com'
+    'https://planner-backend-i13a.onrender.com'
 ];
 
 app.use(cors({
