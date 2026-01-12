@@ -35,7 +35,7 @@ const createSendToken = (user, statusCode, res) => {
         data: {
             name: user.name,
             email: user.email,
-            id: user.id,
+            id: user_.id,
         }
     });
 };
