@@ -23,7 +23,7 @@ const createSendToken = (user, statusCode, res) => {
         ),
         httpOnly: true,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production'
+        secure: true,
     };
 
 
@@ -119,7 +119,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 exports.logout = catchAsync(async (req, res) => {
     res.cookie('jwt', 'loggedout', {
-        expires: new Date(Date.now() + 10 * 1000), // Fixed: expires + new Date
+        expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
     });
 
