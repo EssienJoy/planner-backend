@@ -55,7 +55,7 @@ exports.getMe = catchAsync(async (req, res, next) => {
 exports.getUser = factory.getOne(User);
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-    console.log(req.file);
+    // console.log(req.file);
 
     if (req.body.password || req.body.confirmPassword) {
         return next(
