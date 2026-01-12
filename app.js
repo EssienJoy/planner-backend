@@ -20,10 +20,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 // Enable CORS for your frontend
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://planner-frontend.onrender.com'
+];
+
 app.use(cors({
-    origin: 'http://localhost:5173', // Your frontend URL
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
+
 
 // app.use is used to make use of Middleware
 app.use(helmet());

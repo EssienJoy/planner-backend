@@ -22,8 +22,8 @@ const createSendToken = (user, statusCode, res) => {
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
-        sameSite: 'lax',
-        secure: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production'
     };
 
 
@@ -32,7 +32,6 @@ const createSendToken = (user, statusCode, res) => {
 
     res.status(statusCode).json({
         status: 'success',
-        token,
         data: {
             name: user.name,
             email: user.email,
