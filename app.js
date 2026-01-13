@@ -16,8 +16,6 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use(cors({
     origin:
@@ -29,9 +27,11 @@ app.use(cors({
 
 // app.options('/*', cors());
 
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
-// app.use is used to make use of Middleware
-app.use(helmet());
+app.use('/img', express.static(path.join(__dirname, 'public')));
 
 if (process.env.NODE_ENV === 'development') {
     //logs information about incoming requests
@@ -45,6 +45,7 @@ const limiter = rateLimit({
 });
 
 app.use('/api', limiter);
+
 // Modifies incoming requests
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
