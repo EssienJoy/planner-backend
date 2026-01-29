@@ -9,22 +9,10 @@ const planSchema = new mongoose.Schema(
             maxlength: [50, 'Title cannot be more than 50 characters'],
             unique: true,
         },
-        completed: {
-            type: Boolean,
-            default: false
-        },
-        priority: {
-            type: String,
-            enum: {
-                values: ['low', 'medium', 'high'],
-                message: 'Priority must be either low, medium, or high'
-            },
-            default: 'medium'
-        },
         createdAt: {
             type: Date,
             default: Date.now(),
-            select: false
+            // select: false
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +25,12 @@ const planSchema = new mongoose.Schema(
     }
 
 );
+// planSchema.virtual("tasksCount", {
+//     ref: "Task",
+//     foreignField: "plan",
+//     localField: "_id",
+//     count: true,
+// });
 
 
 const Plan = mongoose.model('Plan', planSchema);

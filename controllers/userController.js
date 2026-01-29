@@ -54,30 +54,32 @@ exports.getMe = catchAsync(async (req, res, next) => {
 });
 exports.getUser = factory.getOne(User);
 
-exports.updateMe = catchAsync(async (req, res, next) => {
-    // console.log(req.file);
+exports.updateMe = catchAsync(
+    async (req, res, next) => {
+        console.log(req.body);
+        // console.log(req.file);
 
-    if (req.body.password || req.body.confirmPassword) {
-        return next(
-            new AppError(
-                'This route is not for password updates. Please Use /resetMyPassword ',
-                400));
-    }
-
-
-    const filteredBody = filterObj(req.body, 'fullName', 'email', 'photo');
-    if (req.file) filteredBody.photo = req.file.filename;
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-        new: true,
-        runValidators: true,
-    });
-    res.status(200).json({
-        status: 'success',
-        data: {
-            user: updatedUser,
+        if (req.body.password || req.body.confirmPassword) {
+            return next(
+                new AppError(
+                    'This route is not for password updates. Please Use /resetMyPassword ',
+                    400));
         }
+
+
+        const filteredBody = filterObj(req.body, 'fullName', 'email', 'photo');
+        if (req.file) filteredBody.photo = req.file.filename;
+        const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+            new: true,
+            runValidators: true,
+        });
+        res.status(200).json({
+            status: 'success',
+            data: {
+                user: updatedUser,
+            }
+        });
     });
-});
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
     await User.findByIdAndUpdate(req.user.id, { active: false });

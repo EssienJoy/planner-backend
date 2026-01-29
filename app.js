@@ -11,7 +11,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const compression = require('compression');
 // const mongoSanitize = require('express-mongo-sanitize');
-// const xss = require('xss-clean');
+
 // const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
@@ -54,13 +54,14 @@ app.use(cookieParser());
 
 // Data Sanitization against no sql query injection
 
-// app.use(mongoSanitize({
-//     onSanitize: ({ req, key }) => {
-//         console.warn(`This request[${key}] is sanitized`);
-//     },
-// }));
-// Data Sanitization Xss
-// app.use(xss());
+// app.use(
+//     mongoSanitize({
+//         allowDots: true,
+//         replaceWith: '_',
+//     }),
+// );
+
+
 app.use(compression());
 
 
@@ -70,7 +71,6 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tasks', taskRouter);
 
 app.use((req, res, next) => {
-
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 

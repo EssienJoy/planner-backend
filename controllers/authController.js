@@ -31,10 +31,11 @@ const createSendToken = (user, statusCode, req, res) => {
 
     res.status(statusCode).json({
         status: 'success',
+        token,
         data: {
             name: user.name,
             email: user.email,
-            id: user_.id,
+            id: user._id,
         }
     });
 };
@@ -51,7 +52,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
 
     const url = `${req.protocol}://localhost:5173/settings/user`;
     await new Email(newUser, url).sendWelcome();
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 201, req, res);
 
 });
 
@@ -73,18 +74,18 @@ exports.login = catchAsync(async (req, res, next) => {
     ) {
         return next(new AppError('Incorrect email or password', 401));
     }
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 
 });
 
 exports.logout = catchAsync(async (req, res) => {
     res.cookie('jwt', 'loggedout', {
-        expires: new Date(date.now() + 10 * 1000),
+        expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
     });
 
     res.status(200).json({
-        status: success,
+        status: 'success',
 
     });
 });
@@ -197,7 +198,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 
 
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -217,5 +218,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     await user.save();
 
     //Log  the user in with the new updated password
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });
