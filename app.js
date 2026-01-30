@@ -64,6 +64,15 @@ app.use(cookieParser());
 
 app.use(compression());
 
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
+app.get('/test-env', (req, res) => {
+    res.json({
+        nodeEnv: process.env.NODE_ENV,
+        isProduction: process.env.NODE_ENV === 'production'
+    });
+});
+
 
 // Routes
 app.use('/api/v1/plans', planRouter);
